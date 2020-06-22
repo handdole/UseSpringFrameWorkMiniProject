@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<context:property-placeholder location="classpath:db.properties"/>
+	
+	<bean id="myBatis" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="factory"></constructor-arg>
+	</bean>
+	<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 주소값이면 ref 스트링이나 인트면 value -->
+		<property name="configLocation" value="classpath:mybatisConfig.xml"></property>
+		<property name="dataSource" ref="dbcp"></property>
+	</bean>
+	<bean id="dbcp" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+</beans>

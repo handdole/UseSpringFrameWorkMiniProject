@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+	<select id="selectone" resultMap="rm">
+		select * from member where id = #{id}
+	</select>
+	
+	<select id="login" parameterType="memberDTO" resultMap="rm">
+		select * from member where id = #{id} and pw = #{pw}
+	</select>
+	
+	<select id="idcheck" parameterType="memberDTO" resultMap="rm">
+					<!-- 레코드의 항목과 DTO의 변수 이름이 같으면 이런식으로 가능 -->
+		select * from member where id = #{id}
+	</select>
+	
+	<!-- 레코드(DB)의 항목명과 dto의 멤버변수가 다른 경우 -->
+	<resultMap type="memberDTO" id="rm">
+		<!-- property가 DTO column이 DB(SET메소드라고 생각하면됨) -->
+		<result property="id" column="id"/>
+		<result property="pw" column="pw"/>
+		<result property="tel" column="tel"/>
+		<result property="name" column="name"/>
+		<result property="addr"	column="addr"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="memberDTO">
+		insert into member values(#{id},#{pw},#{tel},#{addr},#{name})
+	</insert>	
+	<delete id="delete" parameterType="memberDTO">
+		delete from member where id = #{id}
+	</delete>
+	<update id="update" parameterType="memberDTO">
+		update member set name = #{name} , tel = #{tel} , addr = #{addr}  where id = #{id}
+	</update>
+	
+	<update id="pwupdate" parameterType="memberDTO">
+		update member set pw = #{pw}  where id = #{id}
+	</update>
+	
+</mapper>
